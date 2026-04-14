@@ -1,2 +1,5 @@
 hdfs/name-node/
+
 hdfs/data-node/
+
+hdfs/data-input/
