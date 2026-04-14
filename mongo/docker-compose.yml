@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # CONFIG SERVER (1 node) 
+  # Lưu trữ metadata của toàn bộ cụm sharded
+  configsvr:
+    image: mongo:latest
+    container_name: configsvr
+    command: mongod --configsvr --replSet cfRS --port 27017 --bind_ip_all --wiredTigerCacheSizeGB 0.5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+
+  # SHARD 1 (1 node) 
+  shard1:
+    image: mongo:latest
+    container_name: shard1
+    command: mongod --shardsvr --replSet sh1RS --port 27017 --bind_ip_all --wiredTigerCacheSizeGB 0.75
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  # SHARD 2 (1 node) 
+  shard2:
+    image: mongo:latest
+    container_name: shard2
+    command: mongod --shardsvr --replSet sh2RS --port 27017 --bind_ip_all --wiredTigerCacheSizeGB 0.75
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
+  # MONGOS (ROUTER - main gate)
+  mongos:
+    image: mongo:latest
+    container_name: mongos
+    depends_on:
+      - configsvr
+    ports:
+      - "27018:27017"
+    command: mongos --configdb cfRS/configsvr:27017 --port 27017 --bind_ip_all
+    deploy:
+      resources:
+        limits:
+          memory: 512M
