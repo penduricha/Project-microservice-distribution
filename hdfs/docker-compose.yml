@@ -1,0 +1,86 @@
+version: '3.8'
+
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    restart: always
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    volumes:
+      - ./name-node:/hadoop/dfs/name
+      - ./data-input:/data-input
+    env_file:
+      - ./hadoop.env
+    deploy:
+      resources:
+        limits:
+          memory: 1G # Giảm từ 2G xuống 1G
+    environment:
+      - CLUSTER_NAME=data_cluster
+      - ENSURE_NAMENODE_DIR=/hadoop/dfs/name 
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    restart: always
+    volumes:
+      - ./data-node/node1:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+    deploy:
+      resources:
+        limits:
+          memory: 750M # Giảm để khớp tổng 4GB
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    restart: always
+    volumes:
+      - ./data-node/node2:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+    deploy:
+      resources:
+        limits:
+          memory: 750M
+
+  datanode3:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode3
+    restart: always
+    volumes:
+      - ./data-node/node3:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+    deploy:
+      resources:
+        limits:
+          memory: 750M
+
+  datanode4:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode4
+    restart: always
+    volumes:
+      - ./data-node/node4:/hadoop/dfs/data
+    env_file:
+      - ./hadoop.env
+    depends_on:
+      - namenode
+    deploy:
+      resources:
+        limits:
+          memory: 750M
+
+networks:
+  default:
+    name: bigdata_cluster_node
