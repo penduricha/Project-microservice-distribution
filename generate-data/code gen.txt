@@ -6,7 +6,6 @@ import time
 def generate_data_colab(total_rows, chunk_size, output_file):
     start_time = time.time()
     
-    # Xóa file cũ nếu tồn tại để ghi mới
     if os.path.exists(output_file):
         os.remove(output_file)
         
@@ -35,7 +34,6 @@ def generate_data_colab(total_rows, chunk_size, output_file):
             'Drug': drug
         })
         
-        # Ghi vào file CSV (chế độ 'a' - append)
         header = True if i == 0 else False
         df_chunk.to_csv(output_file, mode='a', index=False, header=header)
         
@@ -43,24 +41,22 @@ def generate_data_colab(total_rows, chunk_size, output_file):
             print(f"Đã hoàn thành: {(i + 1) * chunk_size} dòng...")
 
     end_time = time.time()
-    print(f"{output_file} ---")
     print(f"Thời gian thực hiện: {(end_time - start_time)/60:.2f} phút")
 
-# Cấu hình tham số
+
 TOTAL_ROWS = 50_000_000
 CHUNK_SIZE = 1_000_000 # Mỗi lần sinh 1 triệu dòng để an toàn cho RAM
 FILE_NAME = "drug200_bigdata.csv"
 
 generate_data_colab(TOTAL_ROWS, CHUNK_SIZE, FILE_NAME)
 
-# Chia file thành các file nhỏ, mỗi file 10 triệu dòng
 !split -l 10000000 drug200_bigdata.csv drug_part_
 from google.colab import files
 import glob
 for f in glob.glob("drug_part_*"):
     files.download(f)
     
-# Merge
+
 Linux ubuntu: ~$ cat drug_part_* > drug_full.csv
 
 Lệnh đọc dữ liệu: head -n 20 drug_full.csv

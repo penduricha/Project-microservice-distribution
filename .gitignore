@@ -5,3 +5,7 @@ hdfs/data-node/
 hdfs/name-node/
 
 spark/.venv/
+
+.vscode/
+
+.spark/jobs/classification_model_spark/

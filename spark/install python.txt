@@ -6,7 +6,9 @@ Bước 1: Vào new terminal gõ lệnh này mở .venv pip thư viện:
 .\.venv\Scripts\activate
 
 Bước 2: Pip thư viện theo dòng lệnh sau:
-pip install pyspark numpy pandas findspark pymongo
+# Cập nhật pip và cài đặt các thư viện cơ bản
+pip install --upgrade pip
+pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel
 
 Bước 3: Đóng .venv:
 deactivate
@@ -25,7 +27,9 @@ Bước 1: Vào new terminal gõ lệnh này mở .venv pip thư viện:
 source .venv/bin/activate
 
 Bước 2: Pip thư viện theo dòng lệnh sau:
-pip install pyspark numpy pandas findspark pymongo
+# Cập nhật pip và cài đặt các thư viện cơ bản
+pip install --upgrade pip
+pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel
 
 Bước 3: Đóng .venv:
 deactivate

@@ -16,10 +16,13 @@ services:
     deploy:
       resources:
         limits:
-          memory: 512M # Giới hạn NameNode còn 512MB
+          memory: 512M
     environment:
       - CLUSTER_NAME=data_cluster
-      - ENSURE_NAMENODE_DIR=/hadoop/dfs/name 
+      - ENSURE_NAMENODE_DIR=/hadoop/dfs/name
+    networks:
+      bigdata_net:
+        ipv4_address: 172.20.0.2
 
   datanode1:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -34,7 +37,10 @@ services:
     deploy:
       resources:
         limits:
-          memory: 384M # Giới hạn DataNode
+          memory: 384M
+    networks:
+      bigdata_net:
+        ipv4_address: 172.20.0.3
 
   datanode2:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -50,6 +56,9 @@ services:
       resources:
         limits:
           memory: 384M
+    networks:
+      bigdata_net:
+        ipv4_address: 172.20.0.4
 
   datanode3:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -65,6 +74,9 @@ services:
       resources:
         limits:
           memory: 384M
+    networks:
+      bigdata_net:
+        ipv4_address: 172.20.0.5
 
   datanode4:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -80,7 +92,16 @@ services:
       resources:
         limits:
           memory: 384M
+    networks:
+      bigdata_net:
+        ipv4_address: 172.20.0.6
 
 networks:
-  default:
+  bigdata_net:
     name: bigdata_cluster_node
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+          gateway: 172.20.0.1

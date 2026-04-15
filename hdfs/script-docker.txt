@@ -11,8 +11,8 @@ Insert data in Data Lake before training
 Phải nạp data vào HDFS, sau mỗi lần thực thi nó sẽ mất.
 
 Create folder in HDFS, Put file from folder data-input to HDFS:
-~$ docker exec namenode hdfs dfs -mkdir -p /user/data
-&& docker cp "data-input/drug200.csv" namenode:/tmp/drug200.csv
+~$ docker exec namenode hdfs dfs -mkdir -p /user/data \
+&& docker cp "data-input/drug200.csv" namenode:/tmp/drug200.csv \
 && docker exec -it namenode hdfs dfs -put /tmp/drug200.csv /user/data/
 
 Check result overall:
@@ -22,6 +22,7 @@ Check distribution or data:
 ~$ docker exec namenode hdfs dfs -ls -R /user/data/
 ~$ docker exec namenode hdfs fsck /user/data/drug200.csv -files -blocks -locations
 
-If conflict or exception, stop by cli: ~$ sudo docker-compose down and start over.
+If conflict or exception, stop by cli: 
+~$ sudo docker-compose down and start over.
 
 Update hdfs config: docker-compose up -d
