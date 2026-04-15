@@ -8,4 +8,4 @@ spark/.venv/
 
 .vscode/
 
-.spark/jobs/classification_model_spark/
+spark/jobs/classification_model_spark/
