@@ -9,10 +9,10 @@ from pymongo import MongoClient
 from datetime import datetime
 
 # 1. Initialize SparkSession optimized for 16GB RAM.
-username = "admin"
-password = "123"
-port = 27018
-mongo_uri = f"mongodb://{username}:{password}@127.0.0.1:{port}/admin?authSource=admin"
+# username = "admin"
+# password = "123"
+# port = 27018
+# mongo_uri = f"mongodb://{username}:{password}@127.0.0.1:{port}/admin?authSource=admin"
 
 spark = (SparkSession.builder
     .appName("Optimized_RF_50M_Rows")
@@ -34,8 +34,8 @@ spark = (SparkSession.builder
     .config("spark.sql.broadcastTimeout", "1200s")
     
     # Config MongoDB Connector
-    .config("spark.mongodb.write.connection.uri", mongo_uri)
-    .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:10.2.2")
+    # .config("spark.mongodb.write.connection.uri", mongo_uri)
+    # .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:10.2.2")
     .getOrCreate())
 
 # Thiết lập thư mục Checkpoint trên HDFS để giải phóng RAM trong quá trình train
