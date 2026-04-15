@@ -124,57 +124,57 @@ metrics = MulticlassMetrics(predictionAndLabels)
 print("Ma trận nhầm lẫn (Confusion Matrix):")
 print(metrics.confusionMatrix().toArray())
 
-# 6. Lưu kết quả dự đoán vào MongoDB
-print("Save to MongoDB...")
+# # 6. Lưu kết quả dự đoán vào MongoDB
+# print("Save to MongoDB...")
 
-# Thiết lập kết nối
-client = MongoClient(mongo_uri)
-db = client.admin
+# # Thiết lập kết nối
+# client = MongoClient(mongo_uri)
+# db = client.admin
 
-db.predictions.delete_many({})
+# db.predictions.delete_many({})
 
-def save_to_mongodb_partition(partition):
-    from pymongo import MongoClient
-    client = MongoClient(mongo_uri)
-    db = client.admin
-    collection = db.predictions
+# def save_to_mongodb_partition(partition):
+#     from pymongo import MongoClient
+#     client = MongoClient(mongo_uri)
+#     db = client.admin
+#     collection = db.predictions
     
-    batch = []
-    for row in partition:
-        batch.append(row.asDict())
-        if len(batch) >= 5000: 
-            collection.insert_many(batch)
-            batch = []
-    if batch:
-        collection.insert_many(batch)
-    client.close()
+#     batch = []
+#     for row in partition:
+#         batch.append(row.asDict())
+#         if len(batch) >= 5000: 
+#             collection.insert_many(batch)
+#             batch = []
+#     if batch:
+#         collection.insert_many(batch)
+#     client.close()
 
-# Choose column to save
-predictions.select("Age", "Sex", "BP", "Cholesterol", "prediction") \
-    .foreachPartition(save_to_mongodb_partition)
+# # Choose column to save
+# predictions.select("Age", "Sex", "BP", "Cholesterol", "prediction") \
+#     .foreachPartition(save_to_mongodb_partition)
 
-# prepare data report
-confusion_matrix_list = metrics.confusionMatrix().toArray().tolist() 
-# Numpy array to List
+# # prepare data report
+# confusion_matrix_list = metrics.confusionMatrix().toArray().tolist() 
+# # Numpy array to List
 
-report_data = {
-    "model_name": "Random Forest",
-    "timestamp": datetime.now(), 
-    "metrics": {
-        "accuracy": accuracy,
-        "f1_score": f1,
-        "precision": weighted_precision,
-        "recall": weighted_recall
-    },
-    "confusion_matrix": confusion_matrix_list
-}
+# report_data = {
+#     "model_name": "Random Forest",
+#     "timestamp": datetime.now(), 
+#     "metrics": {
+#         "accuracy": accuracy,
+#         "f1_score": f1,
+#         "precision": weighted_precision,
+#         "recall": weighted_recall
+#     },
+#     "confusion_matrix": confusion_matrix_list
+# }
 
-# Save to mongo
-report_collection = db.random_forest_report
-# Delete old data
-report_collection.delete_many({}) 
-report_collection.insert_one(report_data)
+# # Save to mongo
+# report_collection = db.random_forest_report
+# # Delete old data
+# report_collection.delete_many({}) 
+# report_collection.insert_one(report_data)
 
-print("Hoàn tất lưu dữ liệu!")
-print("End.")
+# print("Hoàn tất lưu dữ liệu!")
+# print("End.")
 spark.stop()
