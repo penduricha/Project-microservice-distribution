@@ -6,18 +6,19 @@ Turn on services 4 data nodes:
 
 Type: http://localhost:9870 to check status.
 
-Insert data in Data Lake
+Insert data in Data Lake before training
 
-Create folder in HDFS: 
+Phải nạp data vào HDFS, sau mỗi lần thực thi nó sẽ mất.
+
+Create folder in HDFS, Put file from folder data-input to HDFS:
 ~$ docker exec namenode hdfs dfs -mkdir -p /user/data
-
-Put file from folder data-input to HDFS:
-~$ docker exec namenode hdfs dfs -put /data-input/drug200.csv /user/data/
+&& docker cp "data-input/drug200.csv" namenode:/tmp/drug200.csv
+&& docker exec -it namenode hdfs dfs -put /tmp/drug200.csv /user/data/
 
 Check result overall:
 ~$ sudo docker exec namenode hdfs dfs -ls /user/data
 
-Check distribution:
+Check distribution or data:
 ~$ docker exec namenode hdfs dfs -ls -R /user/data/
 ~$ docker exec namenode hdfs fsck /user/data/drug200.csv -files -blocks -locations
 

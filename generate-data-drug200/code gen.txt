@@ -1,0 +1,66 @@
+import pandas as pd
+import numpy as np
+import os
+import time
+
+def generate_data_colab(total_rows, chunk_size, output_file):
+    start_time = time.time()
+    
+    # Xóa file cũ nếu tồn tại để ghi mới
+    if os.path.exists(output_file):
+        os.remove(output_file)
+        
+    num_chunks = total_rows 
+    
+    for i in range(num_chunks):
+        age = np.random.randint(15, 75, size=chunk_size)
+        na_to_k = np.random.uniform(6.0, 35.0, size=chunk_size)
+        bp = np.random.choice(['HIGH', 'LOW', 'NORMAL'], size=chunk_size)
+        cholesterol = np.random.choice(['HIGH', 'NORMAL'], size=chunk_size)
+        sex = np.random.choice(['F', 'M'], size=chunk_size)
+        
+        # Tạo cột Target (Drug) dựa trên quy luật thực tế (để đạt Accuracy cao)
+        # Ví dụ: Nếu Na_to_K > 15 thì thường dùng DrugY
+        drug = np.where(na_to_k > 15, 'DrugY', 
+               np.where((age > 50) & (bp == 'HIGH'), 'drugB',
+               np.where(bp == 'HIGH', 'drugA',
+               np.where(bp == 'LOW', 'drugC', 'drugX'))))
+
+        df_chunk = pd.DataFrame({
+            'Age': age,
+            'Sex': sex,
+            'BP': bp,
+            'Cholesterol': cholesterol,
+            'Na_to_K': na_to_k.round(3),
+            'Drug': drug
+        })
+        
+        # Ghi vào file CSV (chế độ 'a' - append)
+        header = True if i == 0 else False
+        df_chunk.to_csv(output_file, mode='a', index=False, header=header)
+        
+        if (i + 1) % 10 == 0 or (i + 1) == num_chunks:
+            print(f"Đã hoàn thành: {(i + 1) * chunk_size} dòng...")
+
+    end_time = time.time()
+    print(f"{output_file} ---")
+    print(f"Thời gian thực hiện: {(end_time - start_time)/60:.2f} phút")
+
+# Cấu hình tham số
+TOTAL_ROWS = 50_000_000
+CHUNK_SIZE = 1_000_000 # Mỗi lần sinh 1 triệu dòng để an toàn cho RAM
+FILE_NAME = "drug200_bigdata.csv"
+
+generate_data_colab(TOTAL_ROWS, CHUNK_SIZE, FILE_NAME)
+
+# Chia file thành các file nhỏ, mỗi file 10 triệu dòng
+!split -l 10000000 drug200_bigdata.csv drug_part_
+from google.colab import files
+import glob
+for f in glob.glob("drug_part_*"):
+    files.download(f)
+    
+# Merge
+Linux ubuntu: ~$ cat drug_part_* > drug_full.csv
+
+Lệnh đọc dữ liệu: head -n 20 drug_full.csv

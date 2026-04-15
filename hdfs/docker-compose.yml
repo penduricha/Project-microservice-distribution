@@ -16,7 +16,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 1G # Giảm từ 2G xuống 1G
+          memory: 512M # Giới hạn NameNode còn 512MB
     environment:
       - CLUSTER_NAME=data_cluster
       - ENSURE_NAMENODE_DIR=/hadoop/dfs/name 
@@ -34,7 +34,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 750M # Giảm để khớp tổng 4GB
+          memory: 384M # Giới hạn DataNode
 
   datanode2:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -49,7 +49,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 750M
+          memory: 384M
 
   datanode3:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -64,7 +64,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 750M
+          memory: 384M
 
   datanode4:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
@@ -79,7 +79,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 750M
+          memory: 384M
 
 networks:
   default:

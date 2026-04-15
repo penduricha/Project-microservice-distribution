@@ -1,0 +1,9 @@
+~$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' namenode
+<ip address>
+
+# Tuong tu cho cac node con
+~$ sudo nano /etc/hosts
+edit
+<ip address> 749842c0b87c (id containers)
+<...> (id node hdfs in containers)
+Ctrl + O -> Enter -> Ctrl + X

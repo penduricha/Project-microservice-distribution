@@ -1,0 +1,39 @@
+Windows:
+Tạo folder .venv chứa thư viện python.
+python -m venv .venv
+
+Bước 1: Vào new terminal gõ lệnh này mở .venv pip thư viện:
+.\.venv\Scripts\activate
+
+Bước 2: Pip thư viện theo dòng lệnh sau:
+pip install pyspark numpy pandas findspark pymongo
+
+Bước 3: Đóng .venv:
+deactivate
+
+# Kích hoạt venv
+.venv\Scripts\activate
+
+# Xuất file
+pip freeze > requirements.txt
+
+Linux:
+Tạo folder .venv chứa thư viện python.
+python3 -m venv .venv
+
+Bước 1: Vào new terminal gõ lệnh này mở .venv pip thư viện:
+source .venv/bin/activate
+
+Bước 2: Pip thư viện theo dòng lệnh sau:
+pip install pyspark numpy pandas findspark pymongo
+
+Bước 3: Đóng .venv:
+deactivate
+
+# Kích hoạt venv
+source .venv/bin/activate
+
+# Xuất file
+pip freeze > requirements.txt
+
+import from requirements.txt: pip install -r requirements.txt
