@@ -4,7 +4,7 @@ hdfs/data-node/
 
 hdfs/name-node/
 
-spark/.venv/
+.venv/
 
 .vscode/
 

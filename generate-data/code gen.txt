@@ -45,7 +45,7 @@ def generate_data_colab(total_rows, chunk_size, output_file):
 
 
 TOTAL_ROWS = 50_000_000
-CHUNK_SIZE = 1_000_000 # Mỗi lần sinh 1 triệu dòng để an toàn cho RAM
+CHUNK_SIZE = 1_000_000 
 FILE_NAME = "drug200_bigdata.csv"
 
 generate_data_colab(TOTAL_ROWS, CHUNK_SIZE, FILE_NAME)
