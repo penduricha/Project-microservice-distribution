@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.StringIndexerModel","timestamp":1777099348668,"sparkVersion":"4.1.1","uid":"StringIndexer_61f88590c0a9","paramMap":{"handleInvalid":"skip","inputCol":"Drug","outputCol":"indexedLabel"},"defaultParamMap":{"handleInvalid":"error","outputCol":"StringIndexer_61f88590c0a9__output","stringOrderType":"frequencyDesc"}}

@@ -9,7 +9,6 @@ Bước 2: Pip thư viện theo dòng lệnh sau:
 # Cập nhật pip và cài đặt các thư viện cơ bản
 pip install --upgrade pip && \
 pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel xgboost
-pip install --upgrade pyarrow
 
 Bước 3: Đóng .venv:
 deactivate
@@ -31,7 +30,6 @@ Bước 2: Pip thư viện theo dòng lệnh sau:
 # Cập nhật pip và cài đặt các thư viện cơ bản
 pip install --upgrade pip && \
 pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel xgboost
-pip install --upgrade pyarrow
 
 Bước 3: Đóng .venv:
 deactivate
