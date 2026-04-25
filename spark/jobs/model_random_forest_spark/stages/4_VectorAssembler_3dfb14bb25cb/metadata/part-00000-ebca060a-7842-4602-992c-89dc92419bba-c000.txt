@@ -1,1 +1,0 @@
-{"class":"org.apache.spark.ml.feature.VectorAssembler","timestamp":1777099350394,"sparkVersion":"4.1.1","uid":"VectorAssembler_3dfb14bb25cb","paramMap":{"inputCols":["Age","Sex_Index","BP_Index","Cholesterol_Index","Na_to_K"],"outputCol":"features"},"defaultParamMap":{"handleInvalid":"error","outputCol":"VectorAssembler_3dfb14bb25cb__output"}}

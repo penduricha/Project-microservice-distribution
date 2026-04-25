@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.feature.StringIndexerModel","timestamp":1777114251111,"sparkVersion":"4.1.1","uid":"StringIndexer_5e0bec0d4fef","paramMap":{"inputCol":"Cholesterol","outputCol":"Cholesterol_Index"},"defaultParamMap":{"handleInvalid":"error","outputCol":"StringIndexer_5e0bec0d4fef__output","stringOrderType":"frequencyDesc"}}
