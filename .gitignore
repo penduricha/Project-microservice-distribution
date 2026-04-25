@@ -8,4 +8,4 @@ hdfs/name-node/
 
 .vscode/
 
-spark/jobs/classification_model_spark/
+spark/jobs/model_random_forest_spark/
