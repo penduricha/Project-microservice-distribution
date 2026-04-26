@@ -39,4 +39,4 @@ echo "Waiting 2 minutes"
 sleep 120
 
 echo "Done"
-sudo docker exec namenode hdfs dfs -ls /user/data
+sudo docker exec namenode hdfs dfs -ls /user/data/drug
