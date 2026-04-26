@@ -1,0 +1,1 @@
+chmod +x setup_hdfs.sh && ./setup_hdfs.sh
