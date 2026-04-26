@@ -23,7 +23,7 @@ sudo docker-compose down -v
 sudo docker-compose up -d
 
 # Đợi NameNode khởi động
-echo "Waiting 1 minutes"
+echo "Waiting 1 minute"
 sleep 60
 
 # --- BƯỚC 3: KIỂM TRA PHÂN CỤM ---
@@ -34,6 +34,8 @@ sudo docker exec namenode hdfs dfsadmin -report | grep -E "Live nodes|Name|Hostn
 sudo docker exec namenode hdfs dfs -mkdir -p /user/data/drug
 sudo docker cp "data-input/drug200.csv" namenode:/tmp/drug200.csv
 sudo docker exec namenode hdfs dfs -put -f /tmp/drug200.csv /user/data/drug
+
+echo "Waiting 2 minutes"
 sleep 120
 
 echo "Done"
