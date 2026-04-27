@@ -18,7 +18,7 @@ Thực hiện theo các bước dưới đây để thiết lập môi trường
 ### Bước 1: Khởi tạo môi trường Python
 Mở terminal tại thư mục gốc của dự án và chạy lệnh sau để tự động cài đặt `.venv` và các container cần thiết:
 ```bash
-chmod +x setup_hdfs.sh && ./setup_venv.sh
+chmod +x setup_venv.sh && ./setup_venv.sh
 ```
 
 ### Bước 2: Khởi tạo cấu trúc HDFS
