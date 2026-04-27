@@ -1,4 +1,7 @@
 #!/bin/bash
+sudo rm -rf name-node/*
+sudo rm -rf data-node/* 
+
 sudo docker-compose down
 
 echo "Kill port 9000"
@@ -19,12 +22,18 @@ sudo chmod -R 777 ./data-node ./name-node ./data-input
 
 # DỌN DẸP VÀ KHỞI TẠO LẠI 
 echo "Cleaning HDFS old and restarting"
+
+mkdir data-node/node1/ data-node/node2/ data-node/node3/ data-node/node4/
+
 sudo docker-compose down -v  
+
+sleep 30
+
 sudo docker-compose up -d
 
 # Đợi NameNode khởi động
-echo "Waiting 1 minute"
-sleep 60
+echo "Waiting 2 minutes"
+sleep 120
 
 # --- BƯỚC 3: KIỂM TRA PHÂN CỤM ---
 echo "Status HDFS"
@@ -35,8 +44,8 @@ sudo docker exec namenode hdfs dfs -mkdir -p /user/data/drug
 sudo docker cp "data-input/drug200.csv" namenode:/tmp/drug200.csv
 sudo docker exec namenode hdfs dfs -put -f /tmp/drug200.csv /user/data/drug
 
-echo "Waiting 2 minutes"
-sleep 120
+echo "Waiting 3 minutes"
+sleep 180
 
 echo "Done"
 sudo docker exec namenode hdfs dfs -ls /user/data/drug
