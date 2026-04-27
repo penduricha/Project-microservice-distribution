@@ -27,6 +27,7 @@ mkdir data-node/node1/ data-node/node2/ data-node/node3/ data-node/node4/
 
 sudo docker-compose down -v  
 
+# Kết thúc dọn dẹp.
 sleep 30
 
 sudo docker-compose up -d
