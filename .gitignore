@@ -4,6 +4,10 @@ hdfs/data-node/*
 
 hdfs/name-node/*
 
+!hdfs/data-input/.gitkeep
+!hdfs/data-node/.gitkeep
+!hdfs/name-node/.gitkeep
+
 .venv/
 
 .vscode/
