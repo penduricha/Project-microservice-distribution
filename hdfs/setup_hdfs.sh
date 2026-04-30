@@ -116,10 +116,10 @@ echo "7. Data Ingestion"
 sudo docker exec namenode hdfs dfs -mkdir -p /user/data/drug
 
 # Upload file
-if [ -f "data-input/drug200.csv" ]; then
+if [ -f "data-input/drug200.parquet" ]; then
     echo "Uploading drug200.csv to HDFS..."
-    sudo docker cp "data-input/drug200.csv" namenode:/tmp/drug200.csv
-    sudo docker exec namenode hdfs dfs -put -f /tmp/drug200.csv /user/data/drug
+    sudo docker cp "data-input/drug200.parquet" namenode:/tmp/drug200.parquet
+    sudo docker exec namenode hdfs dfs -put -f /tmp/drug200.parquet /user/data/drug
     echo "Ingestion completed successfully."
 else
     echo "Warning: data-input/drug200.csv not found. Skipping upload."
