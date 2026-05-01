@@ -1,1 +1,3 @@
 chmod +x setup_hdfs.sh && ./setup_hdfs.sh
+
+chmod +x remove_hdfs.sh && ./remove_hdfs.sh

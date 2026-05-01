@@ -74,10 +74,6 @@ for dir in "${DATA_DIRS[@]}"; do
     mkdir -p "data-node/$dir"
 done
 
-# Grant permissions
-echo "Granting permissions..."
-sudo chmod -R 777 ./data-node ./name-node ./data-input
-
 echo "2. Checking Port 9000"
 PORT_PID=$(sudo lsof -t -i:9000)
 if [ -z "$PORT_PID" ]; then
@@ -87,6 +83,10 @@ else
     sudo kill -9 $PORT_PID
     sleep 10
 fi
+
+# Grant permissions
+echo "Granting permissions..."
+sudo chmod -R 777 ./data-node ./name-node ./data-input
 
 echo "3. Formatting NameNode"
 # Format the namenode - this is critical for the "NameNode is not formatted" error
