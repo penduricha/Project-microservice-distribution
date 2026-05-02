@@ -2,61 +2,73 @@ import pandas as pd
 import numpy as np
 import os
 import time
+import glob
+import pyarrow as pa
+import pyarrow.parquet as pq
 
-def generate_data_colab(total_rows, chunk_size, output_file):
+# 1. Dọn dẹp các file cũ (bao gồm cả .csv và .parquet)
+files_to_delete = glob.glob("../hdfs/data-input/drug_part_*") \
++ glob.glob("../hdfs/data-input/*.parquet") \
++ glob.glob("../hdfs/data-input/*.csv") 
+
+for f in files_to_delete:
+    try:
+        os.remove(f)
+        print(f"Đã xóa: {f}")
+    except:
+        pass
+
+def generate_full_dataset_parquet(total_rows, chunk_size, output_file):
     start_time = time.time()
     
-    if os.path.exists(output_file):
-        os.remove(output_file)
-        
-    num_chunks = total_rows 
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    num_chunks = total_rows // chunk_size
     
+    writer = None
+
     for i in range(num_chunks):
+        # Giữ nguyên logic sinh dữ liệu
         age = np.random.randint(15, 75, size=chunk_size)
         na_to_k = np.random.uniform(6.0, 35.0, size=chunk_size)
         bp = np.random.choice(['HIGH', 'LOW', 'NORMAL'], size=chunk_size)
         cholesterol = np.random.choice(['HIGH', 'NORMAL'], size=chunk_size)
         sex = np.random.choice(['F', 'M'], size=chunk_size)
         
-        # Tạo cột Target (Drug) dựa trên quy luật thực tế (để đạt Accuracy cao)
-        # Ví dụ: Nếu Na_to_K > 15 thì thường dùng DrugY
         drug = np.where(na_to_k > 15, 'DrugY', 
-               np.where((age > 50) & (bp == 'HIGH'), 'drugB',
-               np.where(bp == 'HIGH', 'drugA',
-               np.where(bp == 'LOW', 'drugC', 'drugX'))))
+               np.where((age > 50) & (bp == 'HIGH'), 'DrugB',
+               np.where(bp == 'HIGH', 'DrugA',
+               np.where(bp == 'LOW', 'DrugC', 'DrugX'))))
 
         df_chunk = pd.DataFrame({
-            'Age': age,
-            'Sex': sex,
+            'Age': age.astype(np.int32), # Tối ưu kiểu dữ liệu
+            'Sex': sex, 
             'BP': bp,
-            'Cholesterol': cholesterol,
-            'Na_to_K': na_to_k.round(3),
+            'Cholesterol': cholesterol, 
+            'Na_to_K': na_to_k.round(3).astype(np.float32),
             'Drug': drug
         })
+
+        # Chuyển đổi DataFrame sang PyArrow Table
+        table = pa.Table.from_pandas(df_chunk)
+
+        # Khởi tạo ParquetWriter ở lần lặp đầu tiên
+        if writer is None:
+            writer = pq.ParquetWriter(output_file, table.schema, compression='snappy')
         
-        header = True if i == 0 else False
-        df_chunk.to_csv(output_file, mode='a', index=False, header=header)
-        
-        if (i + 1) % 10 == 0 or (i + 1) == num_chunks:
-            print(f"Đã hoàn thành: {(i + 1) * chunk_size} dòng...")
+        # Ghi chunk vào file
+        writer.write_table(table)
+        print(f"Đã ghi xong: {(i + 1) * chunk_size} dòng vào Parquet...")
+
+    if writer:
+        writer.close()
 
     end_time = time.time()
-    print(f"Thời gian thực hiện: {(end_time - start_time)/60:.2f} phút")
+    print(f"File lưu tại: {output_file}")
+    print(f"Tổng thời gian: {(end_time - start_time)/60:.2f} phút")
 
+# Cấu hình tham số
+TOTAL_ROWS = 50_000_000 
+CHUNK_SIZE = 5_000_000 
+OUTPUT_FILE = "../hdfs/data-input/drug200.parquet"
 
-TOTAL_ROWS = 50_000_000
-CHUNK_SIZE = 1_000_000 
-FILE_NAME = "drug200_bigdata.csv"
-
-generate_data_colab(TOTAL_ROWS, CHUNK_SIZE, FILE_NAME)
-
-!split -l 10000000 drug200_bigdata.csv drug_part_
-from google.colab import files
-import glob
-for f in glob.glob("drug_part_*"):
-    files.download(f)
-    
-
-Linux ubuntu: ~$ cat drug_part_* > drug_full.csv
-
-Lệnh đọc dữ liệu: head -n 20 drug_full.csv
+generate_full_dataset_parquet(TOTAL_ROWS, CHUNK_SIZE, OUTPUT_FILE)
