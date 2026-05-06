@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  redis-shard-1: &redis_base
+    build: .
+    container_name: redis-6380
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.10
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./data/6380:/data
+
+  redis-shard-2:
+    <<: *redis_base
+    container_name: redis-6381
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.11
+    ports:
+      - "6381:6379"
+    volumes:
+      - ./data/6381:/data
+
+  redis-shard-3:
+    <<: *redis_base
+    container_name: redis-6382
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.12
+    ports:
+      - "6382:6379"
+    volumes:
+      - ./data/6382:/data
+
+  redis-shard-4:
+    <<: *redis_base
+    container_name: redis-6383
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.13
+    ports:
+      - "6383:6379"
+    volumes:
+      - ./data/6383:/data
+
+  redis-shard-5:
+    <<: *redis_base
+    container_name: redis-6384
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.14
+    ports:
+      - "6384:6379"
+    volumes:
+      - ./data/6384:/data
+
+  redis-shard-6:
+    <<: *redis_base
+    container_name: redis-6385
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.15
+    ports:
+      - "6385:6379"
+    volumes:
+      - ./data/6385:/data
+
+  redis-shard-7:
+    <<: *redis_base
+    container_name: redis-6386
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.16
+    ports:
+      - "6386:6379"
+    volumes:
+      - ./data/6386:/data
+
+  redis-shard-8:
+    <<: *redis_base
+    container_name: redis-6387
+    networks:
+      redis_cluster_net:
+        ipv4_address: 172.25.0.17
+    ports:
+      - "6387:6379"
+    volumes:
+      - ./data/6387:/data
+
+networks:
+  redis_cluster_net:
+    name: redis_isolated_node
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+          gateway: 172.25.0.1

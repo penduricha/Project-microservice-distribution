@@ -1,0 +1,7 @@
+chmod +x deploy_redis_cluster.sh && ./deploy_redis_cluster.sh
+
+chmod +x remove_redis_cluster.sh && ./remove_redis_cluster.sh
+
+chmod +x run_shards_redis.sh && ./run_shards_redis.sh
+
+docker start $(docker ps -a -q --filter "name=redis")

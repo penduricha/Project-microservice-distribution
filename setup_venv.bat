@@ -14,7 +14,7 @@ echo [2/3] Kich hoat .venv va cai dat thu vien...
 :: Su dung cmd /c de chay cac lenh ben trong moi truong ao
 call .\.venv\Scripts\activate && (
     python -m pip install --upgrade pip
-    pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel xgboost
+    pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel xgboost redis seaborn matplotlib
     echo Xuat file requirements.txt...
     pip freeze > requirements.txt
     deactivate

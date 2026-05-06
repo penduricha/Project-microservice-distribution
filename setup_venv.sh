@@ -1,5 +1,5 @@
 #!/bin/bash
-
+rm -rf .venv
 # Lay duong dan hien tai
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$DIR"
@@ -18,7 +18,7 @@ source .venv/bin/activate
 
 # Cap nhat pip va cai dat package
 pip install --upgrade pip
-pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel xgboost
+pip install pyspark numpy pandas findspark joblib scikit-learn ipykernel xgboost redis seaborn matplotlib 
 
 # Xuat file requirements
 pip freeze > requirements.txt
